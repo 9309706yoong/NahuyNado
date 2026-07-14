@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Нахуй надо",
+  title: "Нафиг надо",
   description: "Сайт, который обесценивает твои идеи.",
 };
 
