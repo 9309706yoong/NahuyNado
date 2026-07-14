@@ -157,7 +157,7 @@ export default function HomePage() {
       </section>
 
       <p className="mt-4 text-center text-xs text-[#5d5470]">
-        Идея была взята у одного из участников чата.
+        Локальное Flask-приложение: http://127.0.0.1:5000
       </p>
     </main>
   );
