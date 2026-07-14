@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Нахуй надо</title>
+  <style>
+    :root {
+      --bg-1: #0b0a12;
+      --bg-2: #150d1f;
+      --bg-3: #241636;
+      --accent: #ff4d6d;
+      --accent-2: #a855f7;
+      --text: #f3f0fa;
+      --muted: #b6adc8;
+      --card: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.11);
+      --shadow: 0 28px 70px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg-1);
+      overflow-x: hidden;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 24px;
+      position: relative;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(168, 85, 247, 0.25), transparent 32%),
+        radial-gradient(circle at 82% 78%, rgba(255, 77, 109, 0.2), transparent 32%),
+        radial-gradient(circle at 50% 120%, rgba(80, 40, 140, 0.35), transparent 45%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+      background-size: 220% 220%;
+      animation: drift 16s ease-in-out infinite;
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.04;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    @keyframes drift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .container {
+      width: min(760px, 100%);
+      display: grid;
+      gap: 22px;
+      animation: appear 0.7s ease-out;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: clamp(26px, 5vw, 48px);
+      box-shadow: var(--shadow);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 10px;
+    }
+
+    .avatar {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 36px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 35px rgba(255, 77, 109, 0.32);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 6.5vw, 3.2rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      background: linear-gradient(90deg, var(--text), var(--muted));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      color: #cbbee0;
+    }
+
+    .form {
+      display: grid;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .input-wrap { position: relative; }
+
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      resize: vertical;
+      background: rgba(0, 0, 0, 0.28);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      color: var(--text);
+      font-size: 1.05rem;
+      line-height: 1.55;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    textarea::placeholder { color: #7a708a; }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(255, 77, 109, 0.15);
+    }
+
+    .hint {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      font-size: 0.75rem;
+      color: #6b617a;
+      pointer-events: none;
+    }
+
+    .btn {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 30px;
+      border: 3px solid #000;
+      border-radius: 14px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 6px 6px 0 #000;
+      transition: transform 0.08s, box-shadow 0.08s, background 0.15s;
+    }
+
+    .btn:hover { background: #ff6b85; }
+
+    .btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: 3px 3px 0 #000;
+    }
+
+    .output {
+      margin-top: 26px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 26px 0;
+      font-size: 0.95rem;
+    }
+
+    .answer {
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.96) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .answer .meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .answer .idea {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .answer .category {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(168, 85, 247, 0.18);
+      color: #d8c8f0;
+      border: 1px solid rgba(168, 85, 247, 0.25);
+    }
+
+    .answer .text {
+      font-size: clamp(1.25rem, 4.2vw, 1.7rem);
+      line-height: 1.4;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 0.8s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .thinking {
+      color: #8b7fa0;
+      font-size: 0.9rem;
+      font-style: italic;
+      min-height: 1.4em;
+    }
+
+    .footer {
+      text-align: center;
+      color: #5d5470;
+      font-size: 0.8rem;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 520px) {
+      body { padding: 16px; }
+      .card { border-radius: 24px; padding: 22px; }
+      header { gap: 14px; }
+      .avatar { width: 58px; height: 58px; font-size: 28px; }
+      .btn { width: 100%; justify-self: stretch; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="grain"></div>
+
+  <main class="container">
+    <section class="card">
+      <header>
+        <div class="avatar" aria-hidden="true">🥀</div>
+        <div>
+          <h1>НАХУЙ НАДО</h1>
+          <p class="subtitle">
+            У тебя появилась идея? Отлично. Сейчас мы подберем к ней идеальное,
+            смысловое и максимально грубое обесценивание.
+          </p>
+          <div class="badges">
+            <span class="badge">100+ отмазок</span>
+            <span class="badge">Смысловой подбор</span>
+            <span class="badge">Токсичность 9000</span>
+          </div>
+        </div>
+      </header>
+
+      <form class="form" id="ideaForm" autocomplete="off">
+        <div class="input-wrap">
+          <textarea
+            id="ideaInput"
+            name="idea"
+            placeholder="Опиши идею подробнее — чем больше деталей, тем точнее попадание..."
+            maxlength="700"
+            required
+          ></textarea>
+          <span class="hint">Enter — отправить</span>
+        </div>
+        <button class="btn" type="submit" id="submitBtn">
+          <span>💀</span>
+          <span>Обесценить</span>
+        </button>
+      </form>
+
+      <div class="output" id="output">
+        <div class="empty" id="emptyState">Пока ничего не обесценено. Время начинать.</div>
+      </div>
+    </section>
+
+    <p class="footer">Навести суеты, не значит насуетить невесту...</p>
+  </main>
+
+  <script>
+    const form = document.getElementById('ideaForm');
+    const input = document.getElementById('ideaInput');
+    const output = document.getElementById('output');
+    const emptyState = document.getElementById('emptyState');
+    const submitBtn = document.getElementById('submitBtn');
+
+    const SHUFFLE_TEXTS = [
+      'Анализирую твою хуету...',
+      'Ищу причину забить...',
+      'Подбираю самое обидное...',
+      'Считаю, сколько людей уже сдались...',
+      'Проверяю, кому это надо...',
+    ];
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.dispatchEvent(new Event('submit'));
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const idea = input.value.trim();
+      if (!idea) return;
+
+      setLoading(true);
+
+      let payload = { message: '', category: 'общее', idea };
+      try {
+        const res = await fetch('/api/respond', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idea })
+        });
+        if (!res.ok) throw new Error('Network response was not ok');
+        payload = await res.json();
+      } catch (err) {
+        payload.message = 'Нафиг надо, даже сервер не хочет это обсуждать.';
+      }
+
+      addAnswer(idea, payload.message || 'Нафиг надо.', payload.category || 'общее');
+      input.value = '';
+      input.focus();
+      setLoading(false);
+    });
+
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.style.opacity = loading ? '0.7' : '1';
+      submitBtn.style.cursor = loading ? 'wait' : 'pointer';
+    }
+
+    function addAnswer(idea, replyText, category) {
+      if (emptyState) emptyState.remove();
+
+      const card = document.createElement('div');
+      card.className = 'answer';
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+
+      const ideaLine = document.createElement('div');
+      ideaLine.className = 'idea';
+      ideaLine.textContent = `Твоя идея: «${idea}»`;
+
+      const catBadge = document.createElement('span');
+      catBadge.className = 'category';
+      catBadge.textContent = category;
+
+      meta.appendChild(ideaLine);
+      meta.appendChild(catBadge);
+
+      const thinking = document.createElement('div');
+      thinking.className = 'thinking';
+      thinking.textContent = SHUFFLE_TEXTS[0];
+
+      const textLine = document.createElement('div');
+      textLine.className = 'text';
+      textLine.style.display = 'none';
+
+      card.appendChild(meta);
+      card.appendChild(thinking);
+      card.appendChild(textLine);
+      output.prepend(card);
+
+      // Короткая рулетка перед reveal
+      let shuffle = 0;
+      const shuffleInterval = setInterval(() => {
+        thinking.textContent = SHUFFLE_TEXTS[shuffle % SHUFFLE_TEXTS.length];
+        shuffle++;
+      }, 90);
+
+      setTimeout(() => {
+        clearInterval(shuffleInterval);
+        thinking.remove();
+        textLine.style.display = 'block';
+        typewriter(textLine, replyText);
+      }, 550);
+    }
+
+    function typewriter(container, text) {
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      container.appendChild(cursor);
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i >= text.length) {
+          clearInterval(interval);
+          cursor.remove();
+          return;
+        }
+        container.insertBefore(document.createTextNode(text[i]), cursor);
+        i++;
+      }, 12);
+    }
+  </script>
+</body>
+</html>
